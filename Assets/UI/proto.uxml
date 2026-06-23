@@ -1,0 +1,60 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="proto.uss" />
+
+    <!-- Match-3 HUD: score + goal (left), moves remaining (right). picking-mode Ignore so taps reach the board. -->
+    <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
+        <ui:VisualElement class="hud__col">
+            <ui:Label name="hud-score" class="hud__score" text="0" />
+            <ui:Label name="hud-goal" class="hud__goal" text="Goal 0/0" />
+        </ui:VisualElement>
+        <ui:VisualElement class="hud__col hud__col--right">
+            <ui:Label name="hud-moves" class="hud__moves" text="0" />
+            <ui:Label class="hud__moves-caption" text="MOVES" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+
+    <!-- Cascade / combo callout, centred, punches in on chain >= 2. -->
+    <ui:Label name="hud-combo" class="hud__combo" text="" picking-mode="Ignore" />
+
+    <!-- Win / lose / reward banner (reused for all three). -->
+    <ui:VisualElement name="overlay" class="overlay">
+        <ui:VisualElement name="banner" class="banner">
+            <ui:Label name="banner-label" class="banner__label" text="" />
+            <ui:Label name="banner-sub" class="banner__sub" text="" />
+            <ui:Button name="banner-button" class="banner__button" text="Continue" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+
+    <!-- Meta (bonus) board HUD. Hidden during the match-3 board; the looped board itself renders in-world.
+         picking-mode Ignore on the container so the empty centre passes through; the buttons still click. -->
+    <ui:VisualElement name="meta-hud" class="meta-hud" picking-mode="Ignore">
+        <ui:VisualElement name="meta-stats" class="meta-stats">
+            <ui:Label name="meta-coins" class="meta-stat" text="Coins 0" />
+            <ui:Label name="meta-stars" class="meta-stat" text="Stars 0/3" />
+            <ui:Label name="meta-dice" class="meta-stat" text="Dice 0" />
+        </ui:VisualElement>
+        <ui:VisualElement name="meta-footer" class="meta-footer">
+            <ui:Label name="meta-info" class="meta-info" text="" />
+            <ui:Button name="meta-roll" class="meta-button" text="Roll" />
+            <ui:Button name="meta-next" class="meta-button meta-button--next" text="Next Level" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+
+    <!-- The one allowed settings exception: always-visible gear -> Music/SFX volume + Reset. -->
+    <ui:Button name="settings-button" class="settings-button" text="&#9881;" />
+    <ui:VisualElement name="settings-overlay" class="settings-overlay">
+        <ui:VisualElement name="settings-panel" class="settings-panel">
+            <ui:Label class="settings-title" text="Settings" />
+            <ui:VisualElement class="settings-row">
+                <ui:Label class="settings-row__label" text="Music" />
+                <ui:Slider name="music-slider" class="settings-row__slider" low-value="0" high-value="1" />
+            </ui:VisualElement>
+            <ui:VisualElement class="settings-row">
+                <ui:Label class="settings-row__label" text="SFX" />
+                <ui:Slider name="sfx-slider" class="settings-row__slider" low-value="0" high-value="1" />
+            </ui:VisualElement>
+            <ui:Button name="settings-reset" class="settings-reset" text="Reset Progress" />
+            <ui:Button name="settings-close" class="settings-close" text="Close" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

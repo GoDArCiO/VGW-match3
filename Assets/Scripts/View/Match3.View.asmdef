@@ -1,0 +1,21 @@
+{
+    "name": "Match3.View",
+    "rootNamespace": "Match3.View",
+    "references": [
+        "Proto.Core",
+        "Proto.Game",
+        "Match3.Config",
+        "Match3.Meta",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Universal.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

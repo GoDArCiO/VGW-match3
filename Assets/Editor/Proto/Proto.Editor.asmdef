@@ -1,0 +1,22 @@
+{
+    "name": "Proto.Editor",
+    "rootNamespace": "Proto.EditorTools",
+    "references": [
+        "Proto.Core",
+        "Proto.Game",
+        "Match3.Config",
+        "Match3.Meta",
+        "Match3.View"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,2 @@
+# Drop SFX clips here, named exactly after the hook (e.g. collect.wav, win.wav, lose.wav).
+# A missing clip is a silent no-op. /proto-build lists the needed hooks in audio-needs.md.

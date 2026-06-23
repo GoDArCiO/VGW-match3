@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
+    <title>{{{ PRODUCT_NAME }}}</title>
+    <style>
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #0a0b10; }
+      /* Full-window stage with a black letterbox; the canvas is centred inside it. */
+      #unity-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; }
+      /* The canvas is sized by JS to a fixed 9:16 PORTRAIT box, so the game always reads as a vertical phone,
+         even in a wide desktop browser (black bars on the sides). */
+      #unity-canvas { background: #0a0b10; display: block; touch-action: none; }
+      /* pointer-events:none so this overlay can NEVER eat input, even if it somehow lingers after load
+         (e.g. a browser extension rejects the loader promise on desktop — see hideLoader below). */
+      #unity-loading { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; color: #e8edf5; font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+        pointer-events: none; }
+      #unity-loading-title { font-size: 22px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.85; margin-bottom: 18px; }
+      #unity-progress { width: 220px; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.12); overflow: hidden; }
+      #unity-progress-fill { width: 0%; height: 100%; background: #62aae6; border-radius: 4px; transition: width 0.15s ease-out; }
+      #unity-footer { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font-size: 12px;
+        color: rgba(232,237,245,0.35); font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="unity-container">
+      <canvas id="unity-canvas" tabindex="-1"></canvas>
+      <div id="unity-loading">
+        <div id="unity-loading-title">{{{ PRODUCT_NAME }}}</div>
+        <div id="unity-progress"><div id="unity-progress-fill"></div></div>
+      </div>
+    </div>
+    <div id="unity-footer">A vertical phone slice — best played tall.</div>
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingEl = document.querySelector("#unity-loading");
+      var progressFill = document.querySelector("#unity-progress-fill");
+
+      // Lock to a 9:16 portrait box, centred, letterboxed on wide screens.
+      var ASPECT = 9 / 16;
+      function resizeCanvas() {
+        var w = window.innerWidth, h = window.innerHeight;
+        var cw = h * ASPECT, ch = h;
+        if (cw > w) { cw = w; ch = w / ASPECT; }
+        canvas.style.width = Math.round(cw) + "px";
+        canvas.style.height = Math.round(ch) + "px";
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      var buildUrl = "Build";
+      // NOTE: we deliberately do NOT set config.showBanner. With no banner callback, Unity's benign engine
+      // error LOGS (e.g. "Hidden/CoreSRP/CoreCopy shader is not supported on this GPU" — a harmless URP
+      // blitter-init message on some WebGL GPUs) go to the console only, instead of painting a permanent red
+      // "crash" banner over a game that is actually running fine. The loader still hides on load (.then).
+      var config = {
+        dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
+        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
+        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "{{{ COMPANY_NAME }}}",
+        productName: "{{{ PRODUCT_NAME }}}",
+        productVersion: "{{{ PRODUCT_VERSION }}}",
+      };
+
+      // Hide the loading splash. Called from MULTIPLE triggers because the .then() that normally hides it can
+      // be skipped on desktop: a browser extension (e.g. MetaMask's content script) can make Unity's loader
+      // reject with "Cannot read properties of undefined (reading 'addListener')" even though the engine boots
+      // and runs fine. Idempotent.
+      var loaderHidden = false;
+      function hideLoader() {
+        if (loaderHidden) return;
+        loaderHidden = true;
+        loadingEl.style.display = "none";
+        resizeCanvas();
+      }
+
+      var script = document.createElement("script");
+      script.src = buildUrl + "/{{{ LOADER_FILENAME }}}";
+      script.onload = function () {
+        createUnityInstance(canvas, config, function (progress) {
+          progressFill.style.width = (100 * progress) + "%";
+        }).then(function () {
+          // Engine ready (mobile / no-extension): hide immediately — correct timing, no black gap.
+          hideLoader();
+        }).catch(function (message) {
+          // Desktop + a browser extension can reject here even though the engine is up; the reject lands at about
+          // the same point .then would, so give the first frame a brief grace to paint (avoids a black flash).
+          console.error(message);
+          setTimeout(hideLoader, 800);
+        });
+        // Last-resort safety for a true hang (neither resolves nor rejects). pointer-events:none already keeps the
+        // splash from blocking input; this just ensures it never lingers on screen forever.
+        setTimeout(hideLoader, 12000);
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>

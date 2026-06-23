@@ -1,0 +1,16 @@
+{
+    "name": "Match3.Config",
+    "rootNamespace": "Match3.Config",
+    "references": [
+        "Proto.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

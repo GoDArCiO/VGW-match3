@@ -1,0 +1,263 @@
+/* Proto HUD + banner theme. Colour tokens kept here so a proto can re-skin in one place.
+   Flat, high-contrast, readable at a glance — the shell never competes with the playfield. */
+
+.hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 28px 36px;
+}
+
+.hud__score {
+    font-size: 76px;
+    -unity-font-style: bold;
+    color: rgb(245, 247, 250);
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: rgba(10, 12, 18, 0.85);
+    transform-origin: left;
+}
+
+.hud__col { flex-direction: column; }
+.hud__col--right { align-items: flex-end; }
+
+.hud__goal {
+    font-size: 34px;
+    -unity-font-style: bold;
+    color: rgb(120, 196, 255);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(10, 12, 18, 0.7);
+    margin-top: 2px;
+}
+
+.hud__moves {
+    font-size: 76px;
+    -unity-font-style: bold;
+    color: rgb(245, 247, 250);
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: rgba(10, 12, 18, 0.85);
+    transform-origin: right;
+}
+.hud__moves--low { color: rgb(247, 118, 92); }
+
+.hud__moves-caption {
+    font-size: 24px;
+    color: rgba(245, 247, 250, 0.7);
+    -unity-font-style: bold;
+}
+
+/* Centred cascade/combo callout — punched in by the HUD on chain >= 2, then faded out. */
+.hud__combo {
+    position: absolute;
+    top: 36%;
+    left: 0;
+    right: 0;
+    -unity-text-align: middle-center;
+    font-size: 92px;
+    -unity-font-style: bold;
+    color: rgb(255, 224, 120);
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgba(10, 12, 18, 0.9);
+    transform-origin: center;
+    opacity: 0;
+}
+
+.banner__sub {
+    font-size: 40px;
+    color: rgb(120, 196, 255);
+    -unity-font-style: bold;
+    margin-bottom: 24px;
+}
+
+.hud__time {
+    font-size: 52px;
+    -unity-font-style: bold;
+    color: rgba(245, 247, 250, 0.85);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(10, 12, 18, 0.7);
+}
+
+/* Last few seconds: clock turns hot. */
+.hud__time--hot {
+    color: rgb(247, 118, 92);
+}
+
+/* Full-screen win/lose overlay — a dim scrim with a centred banner. Hidden until a result lands. */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(10, 12, 18, 0.55);
+}
+
+.banner {
+    align-items: center;
+    padding: 44px 64px;
+    border-radius: 28px;
+    background-color: rgba(22, 25, 34, 0.96);
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.banner__label {
+    font-size: 84px;
+    -unity-font-style: bold;
+    color: rgb(245, 247, 250);
+    margin-bottom: 28px;
+}
+
+.banner__button {
+    font-size: 40px;
+    -unity-font-style: bold;
+    color: rgb(16, 18, 24);
+    background-color: rgb(98, 214, 154);
+    padding: 18px 56px;
+    border-radius: 18px;
+    border-width: 0;
+    transition-property: scale, background-color;
+    transition-duration: 0.12s;
+}
+
+.banner__button:hover {
+    background-color: rgb(120, 230, 172);
+    scale: 1.04 1.04;
+}
+
+.banner__button:active {
+    scale: 0.96 0.96;
+}
+
+/* Always-visible settings gear, pinned bottom-right above the playfield. */
+.settings-button {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    width: 72px;
+    height: 72px;
+    font-size: 38px;
+    color: rgba(245, 247, 250, 0.92);
+    background-color: rgba(22, 25, 34, 0.85);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.1);
+    border-radius: 36px;
+    transition-property: scale, background-color;
+    transition-duration: 0.12s;
+}
+.settings-button:hover { background-color: rgba(34, 39, 52, 0.95); scale: 1.06 1.06; }
+.settings-button:active { scale: 0.94 0.94; }
+
+/* Modal volume + reset panel. Hidden until the gear is tapped. */
+.settings-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(10, 12, 18, 0.6);
+}
+.settings-panel {
+    width: 560px;
+    max-width: 86%;
+    padding: 34px 40px 28px;
+    border-radius: 26px;
+    background-color: rgba(22, 25, 34, 0.98);
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+.settings-title {
+    font-size: 46px;
+    -unity-font-style: bold;
+    color: rgb(245, 247, 250);
+    margin-bottom: 22px;
+}
+.settings-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 18px;
+}
+.settings-row__label {
+    width: 130px;
+    font-size: 30px;
+    color: rgba(245, 247, 250, 0.88);
+}
+.settings-row__slider {
+    flex-grow: 1;
+}
+.settings-reset {
+    font-size: 32px;
+    -unity-font-style: bold;
+    color: rgb(16, 18, 24);
+    background-color: rgb(247, 192, 92);
+    padding: 14px 0;
+    margin-top: 10px;
+    border-radius: 14px;
+    border-width: 0;
+    transition-property: scale; transition-duration: 0.12s;
+}
+.settings-reset:hover { scale: 1.02 1.02; }
+.settings-reset:active { scale: 0.97 0.97; }
+.settings-close {
+    font-size: 26px;
+    color: rgba(245, 247, 250, 0.8);
+    background-color: rgba(255, 255, 255, 0.06);
+    padding: 11px 0;
+    margin-top: 12px;
+    border-radius: 12px;
+    border-width: 0;
+}
+.settings-close:hover { background-color: rgba(255, 255, 255, 0.12); }
+
+/* ---- Meta (bonus) board HUD ------------------------------------------------ */
+.meta-hud {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: none;        /* shown only on the meta screen */
+}
+
+.meta-stats {
+    position: absolute;
+    top: 36px; left: 36px; right: 36px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.meta-stat {
+    font-size: 40px;
+    -unity-font-style: bold;
+    color: rgb(245, 247, 250);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(10, 12, 18, 0.8);
+}
+
+.meta-footer {
+    position: absolute;
+    bottom: 120px; left: 0; right: 0;
+    align-items: center;
+}
+.meta-info {
+    font-size: 36px;
+    color: rgba(245, 247, 250, 0.92);
+    -unity-font-style: bold;
+    margin-bottom: 22px;
+    -unity-text-align: middle-center;
+}
+.meta-button {
+    font-size: 44px;
+    -unity-font-style: bold;
+    color: rgb(16, 18, 24);
+    background-color: rgb(98, 214, 154);
+    padding: 20px 80px;
+    border-radius: 20px;
+    border-width: 0;
+    margin-top: 8px;
+    transition-property: scale, background-color;
+    transition-duration: 0.12s;
+}
+.meta-button:hover { scale: 1.04 1.04; }
+.meta-button:active { scale: 0.95 0.95; }
+.meta-button--next { background-color: rgb(247, 192, 92); display: none; }
