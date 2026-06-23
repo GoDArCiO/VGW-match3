@@ -1,20 +1,21 @@
-# Continuous integration — runs the EditMode test suite on every push / PR.
+# Continuous integration: runs the EditMode test suite via GameCI.
 #
 # Uses GameCI (game-ci.github.io), the standard way to run Unity headless in the cloud on a Linux
-# container — the same compile + test gate as `tools/unity.ps1 test` runs locally on Windows.
+# container; the same compile + test gate as `tools/unity.ps1 test` runs locally on Windows.
 #
-# REQUIRED repo secrets (Settings -> Secrets and variables -> Actions):
+# MANUAL TRIGGER ONLY (workflow_dispatch): running Unity in CI needs a Unity license stored as a repo
+# secret, and I didn't want to attach a personal license to a showcase project. The suite is verified
+# locally instead (tools\unity.ps1 compile -> COMPILE OK, tools\unity.ps1 test -> TESTS PASS 50/50).
+# To enable cloud runs, add these repo secrets (Settings -> Secrets and variables -> Actions) and run
+# it from the Actions tab:
 #   UNITY_LICENSE   - contents of your Unity .ulf license file (Personal is fine). See:
 #                     https://game.ci/docs/github/activation
 #   UNITY_EMAIL     - Unity account email   (used for license activation)
 #   UNITY_PASSWORD  - Unity account password
-# Without these the job will fail at activation — that is expected until the secrets are added.
 name: CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:   # manual run from the Actions tab (see header)
 
 jobs:
   editmode-tests:
